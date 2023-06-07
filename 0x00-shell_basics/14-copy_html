@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -name "*.html" -type f | xargs -I {} sh -c '[ "$1" -nt "../$1" ] && cp "$1" ..' _ {}
+find . -name "*.html" -type f -exec cp -n {} ../ \+
