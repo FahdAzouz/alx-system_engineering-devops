@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -maxdepth 1 -name "[A-Z]*" -type f -exec mv {} /tmp/u/ \+
+mv [[:upper:]]* /tmp/u
