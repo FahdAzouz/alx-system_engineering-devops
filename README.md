@@ -1,2 +1,2 @@
-This project is about shell basics
-why?
+#!/bin/bash
+this project is about shell basics
