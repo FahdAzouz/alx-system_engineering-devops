@@ -1,0 +1,4 @@
+#!/usr/bin/env bas
+#  script that displays its own PID.
+
+echo "$$"h
