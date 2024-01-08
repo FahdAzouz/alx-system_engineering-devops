@@ -4,6 +4,20 @@ apt-get -y update
 apt-get -y install nginx
 echo "Hello World!" > /var/www/html/index.nginx-debian.html
 echo "Ceci n'est pas une page" > /usr/share/nginx/html/custom_404.html
-sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/Tolulope05 permanent;\n\n\terror_page 404 \/custom_404.html;\n\tlocation = \/custom_404.html {\n\t\troot \/usr\/share\/nginx\/html;\n\t\tinternal;\n\t}/" /etc/nginx/sites-available/default
-sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOSTNAME\";/" /etc/nginx/nginx.conf
+# Modify the default server block configuration
+sed -i "s|server_name _;|server_name _;\\
+    # Redirect requests for /redirect_me to https://github.com/FahdAzouz
+    rewrite ^/redirect_me https://github.com/FahdAzouz permanent;\\
+    # Set a custom 404 error page
+    error_page 404 /custom_404.html;\\
+    # Specify the root directory for the custom 404 error page
+    location = /custom_404.html {\\
+        root /usr/share/nginx/html;\\
+        internal;\\
+    }|" /etc/nginx/sites-available/default
+
+# Modify the main Nginx configuration
+sed -i "s|include /etc/nginx/sites-enabled/*;|include /etc/nginx/sites-enabled/*;\\
+    # Add a custom HTTP response header
+    add_header X-Served-By \"$HOSTNAME\";|" /etc/nginx/nginx.conf
 service nginx start
