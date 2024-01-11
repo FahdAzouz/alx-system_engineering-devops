@@ -12,7 +12,7 @@ defaults
 
 frontend thefool-tech-frontend
 	bind *:80
-	bind *:443 ssl crt /etc/letsencrypt/live/www.thefoolstudies.tech/privkey.pem
+	bind *:443 ssl crt /etc/letsencrypt/live/www.thefoolstudies.tech/fullchain.pem
 	http-request redirect scheme https unless { ssl_fc }
 	http-request set-header X-Forwarded-Proto https
 	default_backend th3gr00t-tech-backend
