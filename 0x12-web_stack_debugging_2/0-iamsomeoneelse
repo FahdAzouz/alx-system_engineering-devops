@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
+# Runs the whoami command under the user passed as an argument
 
-cd ~/
-cd ../$1
-whoami 
+sudo -u "$1" whoami 
