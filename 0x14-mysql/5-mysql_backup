@@ -1,42 +1,8 @@
-#!/bin/bash
-
-# Check if the MySQL root password is provided as an argument
-if [ -z "$1" ]; then
-  echo "Error: MySQL root password not provided."
-  echo "Usage: $0 <mysql_root_password>"
-  exit 1
-fi
-
-# MySQL credentials
-DB_USER="root"
-DB_PASSWORD="$1"
-
-# Get the directory of the script
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-# Output directory and file
-OUTPUT_DIR="$SCRIPT_DIR"
-OUTPUT_FILE="backup_$(date +\%d-\%m-\%Y).sql"
-TAR_FILE="$OUTPUT_FILE.tar.gz"
-
-# Dump all databases
-mysqldump -u"$DB_USER" -p"$DB_PASSWORD" --all-databases > "$OUTPUT_DIR/$OUTPUT_FILE"
-
-# Check if the dump was successful
-if [ $? -eq 0 ]; then
-  echo "MySQL databases dumped successfully to: $OUTPUT_DIR/$OUTPUT_FILE"
-
-  # Compress the dump file to a tar.gz archive
-  tar -czvf "$TAR_FILE" "$OUTPUT_FILE"
-
-  # Check if the compression was successful
-  if [ $? -eq 0 ]; then
-    echo "Backup compressed to: $TAR_FILE"
-    rm "$OUTPUT_DIR/$OUTPUT_FILE" # Remove the uncompressed dump file
-  else
-    echo "Error: Compression failed."
-  fi
-else
-  echo "Error: MySQL dump failed."
-fi
-
+#!/usr/bin/env bash
+# backup and compress my databases
+mysqldump --all-databases -u root --password="$1" > backup.sql
+day=$(date +"%d")
+month=$(date +"%m")
+year=$(date +"%Y")
+file_name="$day-$month-$year.tar.gz"
+tar -czvf "$file_name" backup.sql
